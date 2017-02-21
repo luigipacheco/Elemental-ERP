@@ -1,0 +1,28 @@
+<head>
+  <title>MakerMexERP</title>
+</head>
+
+<body>
+  <h1>MakerMex ERP</h1>
+  <div class="container">
+    {{>inventory}}
+  </div>
+</body>
+
+<template name="inventory">
+  <div class="row">
+    {{#each products}}
+    <div class="col-xs-12 col-md-3">
+      <div class="thumbnail">
+          <img class="js-product" src="{{img_src}}" alt="{{img_alt}}"/>
+        <div class="caption">
+          <h3> Thumbnail label</h3>
+          <p>description of the product</p>
+            <button class="js-del-product btn btn-warning">delete</button>
+        </div>
+      </div>
+    </div>
+
+  {{/each}}
+</div>
+</template>
