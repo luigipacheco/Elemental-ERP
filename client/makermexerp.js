@@ -21,6 +21,18 @@ Router.route('/products', function () {
   });
 });
 
+Router.route('/crm', function () {
+  this.render('navbar',{           //render the navbar template to the navbar tag
+    to:"navbar"
+  });
+  this.render('crm',{         //render the catalogue template to the main tag
+    to:"main"
+  });
+  this.render('add_customer',{         //render the catalogue template to the main tag
+    to:"modal"
+  });
+});
+
 Router.route('/product/:_id', function () {
   this.render('navbar',{           //render the navbar template to the navbar tag
     to:"navbar"
@@ -109,6 +121,12 @@ Template.body.helpers({username:function(){ //calls the function into the {{user
 }
 
   });
+Template.crm.events({
+  'click .js-show-customer-form':function(event){ //if click on add product button
+    $("#add_customer").modal('show');    //show the modal with add_product ID
+  },
+
+})
 
 Template.catalogue.events({               //this looks for events in the catalogue template
   'click .js-product':function(event){   //on click  do:

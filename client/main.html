@@ -27,10 +27,10 @@
     <div class="container">
       <ul class="nav navbar-nav">
         <li><a href="#">MakerERP</a></li>
-        <li><a href="#">Inventory</a></li>
-        <li><a href="#">CRM</a></li>
-        <li><a href="#">Manufacturing</a></li>
-        <li><a href="#">CRM</a></li>
+        <li><a href="products">Inventory</a></li>
+        <li><a href="crm">CRM</a></li>
+        <li><a href="manufacturing">Manufacturing</a></li>
+        <li><a href="purchase">CRM</a></li>
         <li><a href="#">Inventory</a></li>
         <li><a href="#">CRM</a></li>
       </ul>
@@ -94,6 +94,74 @@
   </div>
 </template>
 
+<template name="add_customer">
+  <div class="modal fade" id="add_customer">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">
+          </div>
+        </div>
+        <div class="modal-body">
+          <form class="js-add-customer form-horizontal">
+              <div class="form-group">
+                <label for="inputname" class="col-sm-2 control-label">Email</label>
+                <div class="col-sm-10">
+                  <input type="name" class="form-control" id="inputname" placeholder="Nombre">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputlastname" class="col-sm-2 control-label">Password</label>
+                <div class="col-sm-10">
+                  <input type="lastname" class="form-control" id="inputlastname" placeholder="apellido">
+                </div>
+              </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                  <div class="col-sm-10">
+                    <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                  </div>
+                </div>
+              <!-- <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Remember me
+                    </label>
+                  </div>
+                </div>
+              </div> -->
+              <div class="form-group">
+                <label for="inputcontact" class="col-sm-2 control-label">Contacto</label>
+                <div class="col-sm-10">
+                  <select class="selectpicker">
+                    <option>Facebook</option>
+                    <option>Google</option>
+                    <option>Recomendación</option>
+                    <option>Prospecto</option>
+                  </select>
+                </div>
+              </div>
+            <div class="form-group">
+              <label for="inputcomment" class="col-sm-2 control-label">Comentarios</label>
+            </div>
+              <div class="form-group">
+                <textarea class="form-control" rows="5" id="comment"></textarea>
+              </div>
+
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success">Aceptar</button>
+
+          <button class="btn btn-warning" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <template name="product">
   <div class="container">
     <h2>{{img_alt}}</h2>
@@ -101,6 +169,12 @@
   </div>
 </template>
 
+<template name="crm">
+  <div> cake </div>
+  {{#if currentUser}}
+  <button class="btn btn-success js-show-customer-form">ADD customer</button>
+  {{/if}}
+</template>
 
 <template name="catalogue">
   <div class="container js-container">
