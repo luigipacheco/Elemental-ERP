@@ -19,16 +19,66 @@ Router.route('/products', function () {
   this.render('add_product',{         //render the catalogue template to the main tag
     to:"modal"
   });
+  this.render('erp-navbar',{           //render the navbar template to the navbar tag
+    to:"sec-navbar"
+  });
 });
 
 Router.route('/crm', function () {
   this.render('navbar',{           //render the navbar template to the navbar tag
     to:"navbar"
   });
+  this.render('crm-navbar',{           //render the navbar template to the navbar tag
+    to:"sec-navbar"
+  });
   this.render('crm',{         //render the catalogue template to the main tag
     to:"main"
   });
   this.render('add_customer',{         //render the catalogue template to the main tag
+    to:"modal"
+  });
+});
+
+Router.route('/customers', function () {
+  this.render('navbar',{           //render the navbar template to the navbar tag
+    to:"navbar"
+  });
+  this.render('crm-navbar',{           //render the navbar template to the navbar tag
+    to:"sec-navbar"
+  });
+  this.render('customers',{         //render the catalogue template to the main tag
+    to:"main"
+  });
+  this.render('add_customer',{         //render the catalogue template to the main tag
+    to:"modal"
+  });
+});
+
+Router.route('/invoice', function () {
+  this.render('navbar',{           //render the navbar template to the navbar tag
+    to:"navbar"
+  });
+  this.render('crm-navbar',{           //render the navbar template to the navbar tag
+    to:"sec-navbar"
+  });
+  this.render('invoices',{         //render the catalogue template to the main tag
+    to:"main"
+  });
+  this.render('create_invoice',{         //render the catalogue template to the main tag
+    to:"modal"
+  });
+});
+Router.route('/support', function () {
+  this.render('navbar',{           //render the navbar template to the navbar tag
+    to:"navbar"
+  });
+  this.render('crm-navbar',{           //render the navbar template to the navbar tag
+    to:"sec-navbar"
+  });
+  this.render('tickets',{         //render the catalogue template to the main tag
+    to:"main"
+  });
+  this.render('create_ticket',{         //render the catalogue template to the main tag
     to:"modal"
   });
 });
@@ -121,13 +171,25 @@ Template.body.helpers({username:function(){ //calls the function into the {{user
 }
 
   });
-Template.crm.events({
+Template.customers.events({
   'click .js-show-customer-form':function(event){ //if click on add product button
     $("#add_customer").modal('show');    //show the modal with add_product ID
   },
 
 })
 
+Template.invoices.events({
+  'click .js-show-invoice-form':function(event){ //if click on add product button
+    $("#create_invoice").modal('show');    //show the modal with add_product ID
+  },
+
+})
+Template.tickets.events({
+  'click .js-show-ticket-form':function(event){ //if click on add product button
+    $("#create_ticket").modal('show');    //show the modal with add_product ID
+  },
+
+})
 Template.catalogue.events({               //this looks for events in the catalogue template
   'click .js-product':function(event){   //on click  do:
     alert("inventory is runnung low!");   //alert
