@@ -9,7 +9,7 @@
 </template>
 
 <template name="navbar">
-  <nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
       <ul class="nav navbar-nav">
         <li><a href="#">MakerERP</a></li>
@@ -20,15 +20,15 @@
         <li><a href="dashboard">Dashboard</a></li>
       </ul>
       <div class="navbar-text navbar-right">
-      {{> loginButtons}}
+      {{> loginButtons align="right"}}
     </div>
     </div>
   </nav>
 </template>
 
 <template name="crm-navbar">
-  <nav class="sec-navbar navbar navbar-default navbar-inverse navbar-fixed-top">
-    <div class="container">
+  <div class= "bartab">
+  <div class="container">
       <ul class="nav navbar-nav">
         <li><a href="crm">CRM</a></li>
         <li><a href="customers">Customers</a></li>
@@ -36,7 +36,7 @@
         <li><a href="support">Support</a></li>
       </ul>
     </div>
-  </nav>
+  </div>
 </template>
 
 

@@ -6,12 +6,38 @@
   max-height: 300px;
 }
 body{
-  padding-top:100px;
+  padding-top:50px;
 }
 .single-img{
   max-width: 100%;
 }
 .sec-navbar{
-  margin-top: 50px;
+  margin-top: 25px;
   background-color:rgb(36, 42, 47);
+}
+
+div.checked {
+  color: #888;
+}
+
+div.checked .text {
+  text-decoration: line-through;
+}
+.new-task input {
+  box-sizing: border-box;
+  padding: 10px 0;
+  background: transparent;
+  border:dashed;
+  width: 100%;
+  padding-right: 80px;
+  font-size: 1em;
+}
+.task{
+  margin-top:20px;
+}
+.bartab{
+  background-color: gray;
+}
+a {
+  color:white;
 }

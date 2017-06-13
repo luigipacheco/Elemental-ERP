@@ -1,7 +1,7 @@
 
 <template name="taskCol">
 <div class="container">
-  <div class="task-column col-md-12 dailies">
+  <div class="task-column col-md-12">
 
       <h1>Tasks({{incompleteCount}})</h1>
       <label class ="hide-completed">
@@ -24,14 +24,15 @@
 
 <template name="task">
 
-  <div class="row {{#if checked}}checked{{/if}}">
+  <div class="row task {{#if checked}}checked{{/if}}">
     <input type="checkbox" checked="{{checked}}" class="toggle-checked"/>
     {{#if isInRole 'admin'}}
-    <button class =" btn btn-warning">&times;</button>
+    <button class ="delete btn btn-warning">&times;</button>
     {{/if}}
     <strong>{{username}}<br></strong>
+    <div><span class="text">{{text}}</span></div>
   </div>
-  <span class="text">{{text}}</span>
+
 
   <!-- <li class="{{#if checked}}checked{{/if}}">
     <input type="checkbox" checked="{{checked}}" class="toggle-checked"/>
