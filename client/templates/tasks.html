@@ -1,0 +1,48 @@
+
+<template name="taskCol">
+<div class="container">
+  <div class="task-column col-md-12 dailies">
+
+      <h1>Tasks({{incompleteCount}})</h1>
+      <label class ="hide-completed">
+        <input type="checkbox" />
+        Hide completed Todos
+      </label>
+      {{#if currentUser}}
+        <form class="new-task">
+          <input type="text" name="text" placeholder="Add new TO-DO"/>
+        </form>
+      {{/if}}
+      <ul>
+        {{#each tasks}}
+          {{> task}}
+        {{/each}}
+      </ul>
+    </div>
+</div>
+</template>
+
+<template name="task">
+
+  <div class="row {{#if checked}}checked{{/if}}">
+    <input type="checkbox" checked="{{checked}}" class="toggle-checked"/>
+    {{#if isInRole 'admin'}}
+    <button class =" btn btn-warning">&times;</button>
+    {{/if}}
+    <strong>{{username}}<br></strong>
+  </div>
+  <span class="text">{{text}}</span>
+
+  <!-- <li class="{{#if checked}}checked{{/if}}">
+    <input type="checkbox" checked="{{checked}}" class="toggle-checked"/>
+    {{#if isInRole 'admin'}}
+      <button class ="delete btn btn-warning">&times;</button>
+    {{/if}}
+
+    <span class="text"><strong>{{username}}<br></strong>{{text}}</span>
+    </li> -->
+</template>
+
+<template name="edit_task">
+
+</template>

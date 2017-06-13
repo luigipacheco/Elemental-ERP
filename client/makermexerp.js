@@ -39,6 +39,22 @@ Router.route('/crm', function () {
   });
 });
 
+Router.route('/inventory', function () {
+  this.render('navbar',{           //render the navbar template to the navbar tag
+    to:"navbar"
+  });
+  this.render('erp-navbar',{           //render the navbar template to the navbar tag
+    to:"sec-navbar"
+  });
+  this.render('inventory',{         //render the catalogue template to the main tag
+    to:"main"
+  });
+  this.render('add_product',{         //render the catalogue template to the main tag
+    to:"modal"
+  });
+});
+
+
 Router.route('/customers', function () {
   this.render('navbar',{           //render the navbar template to the navbar tag
     to:"navbar"
@@ -82,6 +98,20 @@ Router.route('/support', function () {
     to:"modal"
   });
 });
+Router.route('/tasks', function () {
+  this.render('navbar',{           //render the navbar template to the navbar tag
+    to:"navbar"
+  });
+  // this.render('crm-navbar',{           //render the navbar template to the navbar tag
+  //   to:"sec-navbar"
+  // });
+  this.render('taskCol',{         //render the catalogue template to the main tag
+    to:"main"
+  });
+  this.render('edit_task',{         //render the catalogue template to the main tag
+    to:"modal"
+  });
+});
 
 Router.route('/product/:_id', function () {
   this.render('navbar',{           //render the navbar template to the navbar tag
@@ -121,6 +151,26 @@ Accounts.ui.config({  //asks for user name when registering
   passwordSignupFields: "USERNAME_AND_EMAIL"
 });
 
+Template.customers.helpers({
+  customers:function(){ //calls the products based on a filter
+     if (Session.get("userFilter")){// they set a filter!
+       return Customers.find({createdBy:Session.get("userFilter")}, {sort:{rating:-1}, limit:Session.get("productLimit")}); //return the user its stored in the session get user filter
+     }
+     else {
+       return Customers.find({}, {sort:{last:-1}, limit:Session.get("productLimit")});  // if nothing or something falsey is stored return all products!
+     }
+   }
+});
+Template.inventory.helpers({
+  customers:function(){ //calls the products based on a filter
+     if (Session.get("userFilter")){// they set a filter!
+       return Inventory.find({createdBy:Session.get("userFilter")}, {sort:{rating:-1}, limit:Session.get("productLimit")}); //return the user its stored in the session get user filter
+     }
+     else {
+       return Inventory.find({}, {sort:{last:-1}, limit:Session.get("productLimit")});  // if nothing or something falsey is stored return all products!
+     }
+   }
+});
 Template.catalogue.helpers({
   products:function(){ //calls the products based on a filter
      if (Session.get("userFilter")){// they set a filter!
@@ -184,12 +234,21 @@ Template.invoices.events({
   },
 
 })
+
 Template.tickets.events({
   'click .js-show-ticket-form':function(event){ //if click on add product button
     $("#create_ticket").modal('show');    //show the modal with add_product ID
   },
 
 })
+
+Template.inventory.events({
+  'click .js-show-inventory-form':function(event){ //if click on add product button
+    $("#add_product").modal('show');    //show the modal with add_product ID
+  },
+
+})
+
 Template.catalogue.events({               //this looks for events in the catalogue template
   'click .js-product':function(event){   //on click  do:
     alert("inventory is runnung low!");   //alert

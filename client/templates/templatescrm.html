@@ -15,7 +15,7 @@
         <li><a href="#">MakerERP</a></li>
         <li><a href="products">ERP</a></li>
         <li><a href="crm">CRM</a></li>
-        <li><a href="todo">To-Do</a></li>
+        <li><a href="tasks">Tasks</a></li>
         <li><a href="news">News</a></li>
         <li><a href="dashboard">Dashboard</a></li>
       </ul>
@@ -39,18 +39,6 @@
   </nav>
 </template>
 
-<template name="erp-navbar">
-  <nav class="sec-navbar navbar navbar-default navbar-inverse navbar-fixed-top">
-    <div class="container">
-      <ul class="nav navbar-nav">
-        <li><a href="erp">ERP</a></li>
-        <li><a href="inventory">Inventory</a></li>
-        <li><a href="manufacturing">Manufacturing</a></li>
-        <li><a href="purchases">Purchases</a></li>
-      </ul>
-    </div>
-  </nav>
-</template>
 
 <template name="crm">
   <div class="container">
@@ -60,12 +48,36 @@
 
 <template name="customers">
   <div class="container">
-    <div> cake </div>
-    {{#if currentUser}}
-    <button class="btn btn-success js-show-customer-form">ADD customer</button>
-    {{/if}}
+      <div><h2> Clientes </h2></div>
+      {{#if currentUser}}
+      <button class="btn btn-success js-show-customer-form">ADD customer</button>
+      {{/if}}
+    <table class="table table-stripped">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+        <th>Etiquetas</th>
+      </tr>
+    </thead>
+    <tbody id="customertable">
+      {{#each customers}}
+      <tr>
+        <td> {{name}}</td>
+        <td> {{lastname}}</td>
+        <td> {{email}}</td>
+        <td> {{phone}}</td>
+        <td> {{tags}}</td>
+        <td> <button class="btn btn-success"> editar </button></td>
+      </tr>
+    {{/each}}
+    </tbody>
+    </table>
   </div>
 </template>
+
 <template name="add_customer">
   <div class="modal fade" id="add_customer">
     <div class="modal-dialog">
@@ -77,15 +89,21 @@
         <div class="modal-body">
           <form class="js-add-customer form-horizontal">
               <div class="form-group">
-                <label for="inputname" class="col-sm-2 control-label">Email</label>
+                <label for="inputname" class="col-sm-2 control-label">Nombres</label>
                 <div class="col-sm-10">
                   <input type="name" class="form-control" id="inputname" placeholder="Nombre">
                 </div>
               </div>
               <div class="form-group">
-                <label for="inputlastname" class="col-sm-2 control-label">Password</label>
+                <label for="inputlastname" class="col-sm-2 control-label">Apellidos</label>
                 <div class="col-sm-10">
                   <input type="lastname" class="form-control" id="inputlastname" placeholder="apellido">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputcompany" class="col-sm-2 control-label">Empresa</label>
+                <div class="col-sm-10">
+                  <input type="company" class="form-control" id="inputcompany" placeholder="company">
                 </div>
               </div>
                 <div class="form-group">
@@ -288,73 +306,4 @@
       </div>
     </div>
   </div>
-</template>
-
-
-<template name="add_product">
-  <div class="modal fade" id="add_product">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="modal-title">
-          </div>
-        </div>
-        <div class="modal-body">
-          <form class="js-add-product">
-            <input type="text" name="img_src" placeholder="URL"/><br/>
-            <input type="text" name="img_alt" placeholder="Describe the product here"/>
-            <button class="btn btn-success">add product</button>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-warning" data-dismiss="modal">cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-
-<template name="product">
-  <div class="container">
-    <h2>{{img_alt}}</h2>
-    <a href="/products"><img class="single-img" src="{{img_src}}"/></a>
-  </div>
-</template>
-
-
-<template name="catalogue">
-  <div class="container js-container">
-  {{#if currentUser}}
-  <button class="btn btn-success js-show-product-form">ADD Product</button>
-  {{/if}}
-  <p>
-    {{#if filtering_products}}
-    Products filtered by: {{getFilterCategory}} <a href="#" class="js-remove-user-filter">show all</a>
-    {{/if}}
-  </p>
-  <div class="row">
-    {{#each products}}
-    <div class="col-xs-12 col-md-3" id="{{_id}}">
-      <div class="thumbnail">
-          <a href="/product/{{_id}}"><img class="js-product thumbnail-img" src="{{img_src}}" alt="{{img_alt}}"/></a>
-        <div class="caption">
-          <h3> Example Product</h3>
-          <h4> Rating: {{rating}}</h4>
-          <p>Created By:
-            <a href="#" class="js-set-user-filter"> {{getUser createdBy}}</a></p>
-          <p>{{img_alt}}</p>
-          <p>
-            {{>starsRating mutable=true class="js-rate-product" id=_id}}
-          </p>
-          {{#if currentUser}}
-            <button class="js-del-product btn btn-warning">delete</button>
-          {{/if}}
-        </div>
-      </div>
-    </div>
-
-  {{/each}}
-</div>
-</div>
 </template>
