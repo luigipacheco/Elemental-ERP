@@ -30,9 +30,9 @@
     <tbody id="customertable">
       {{#each customers}}
       <tr>
-        <td> {{product}}</td>
-        <td> {{onhand}}</td>
-        <td> {{minstock}}</td>
+        <td> {{productName}}</td>
+        <td> {{atHand}}</td>
+        <td> {{min}}</td>
         <td> {{cost}}</td>
         <td> {{price}}</td>
         <td> <button class="btn btn-warning"> editar </button></td>
@@ -55,62 +55,63 @@
           </div>
         </div>
         <div class="modal-body">
-          <form class="js-add-customer form-horizontal">
+          <form class="js-add-product form-horizontal">
               <div class="form-group">
-                <label for="inputname" class="col-sm-2 control-label">Producto</label>
+                <label for="productName" class="col-sm-2 control-label">Producto</label>
                 <div class="col-sm-10">
-                  <input type="name" class="form-control" id="inputname" placeholder="Nombre">
+                  <input type="text" name="productName" class="form-control" placeholder="Nombre">
                 </div>
               </div>
               <div class="form-group">
-                <label for="inputlastname" class="col-sm-2 control-label">Disponible</label>
+                <label for="atHand" class="col-sm-2 control-label">Disponible</label>
                 <div class="col-sm-10">
-                  <input type="lastname" class="form-control" id="inputlastname" placeholder="apellido">
+                  <input type="number" class="form-control" name="atHand" placeholder="Cantidad disponible">
                 </div>
               </div>
               <div class="form-group">
-                <label for="inputcompany" class="col-sm-2 control-label">Provedor</label>
+                <label for="supplier" class="col-sm-2 control-label">Provedor</label>
                 <div class="col-sm-10">
-                  <input type="company" class="form-control" id="inputcompany" placeholder="company">
+                  <input type="text" class="form-control" name="supplier" placeholder="Provedor">
                 </div>
               </div>
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Minimo</label>
+                  <label for="min" class="col-sm-2 control-label">Minimo</label>
                   <div class="col-sm-10">
-                    <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    <input type="number" class="form-control" name="min" placeholder="Punto de reorden">
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Orden</label>
+                  <label for="orderQty" class="col-sm-2 control-label">Orden</label>
                   <div class="col-sm-10">
-                    <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    <input type="number" class="form-control" name="orderQty" placeholder="Cantidad min por orden">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="price" class="col-sm-2 control-label">Precio</label>
+                  <div class="col-sm-10">
+                    <input type="number" class="form-control" name="price" placeholder="Precio">
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Costo</label>
+                  <label for="cost" class="col-sm-2 control-label">Costo</label>
                   <div class="col-sm-10">
-                    <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    <input type="number" class="form-control" name="cost" placeholder="Costo">
                   </div>
                 </div>
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Precio</label>
-                  <div class="col-sm-10">
-                    <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                  </div>
-                </div>
+
             <div class="form-group">
-              <label for="inputcomment" class="col-sm-2 control-label">Comentarios</label>
+              <label for="comment" class="col-sm-2 control-label">Comentarios</label>
             </div>
               <div class="form-group">
-                <textarea class="form-control" rows="5" id="comment"></textarea>
+                <textarea class="form-control" rows="5" name="comment" placeholder="Comentarios"></textarea>
               </div>
 
+              <button class="btn btn-success">Aceptar</button>
 
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-success">Aceptar</button>
-
           <button class="btn btn-warning" data-dismiss="modal">Cancelar</button>
         </div>
       </div>

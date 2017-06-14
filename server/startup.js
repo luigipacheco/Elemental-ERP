@@ -24,9 +24,9 @@ Meteor.startup(function(){     //runs only on startup
   if (Inventory.find().count()== 0){   // checks for content in the products collection
     Inventory.insert(                  //inserts an example product in case none is found
       {
-      product:"test",
-      onhand:"10",
-      minstock:"10",
+      productName:"test",
+      atHand:"10",
+      min:"10",
       cost:"10",
       price:"20"
       }
