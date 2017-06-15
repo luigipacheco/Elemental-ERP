@@ -1,0 +1,194 @@
+<template name="inventory">
+  <div class="container">
+      <div><h2> Inventario </h2></div>
+      {{#if currentUser}}
+      <button class="btn btn-success js-show-inventory-form">Crear Producto</button>
+      {{/if}}
+    <table class="table table-stripped">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Disponible</th>
+        <th>Minimo</th>
+        <th>Costo</th>
+        <th>Precio</th>
+      </tr>
+    </thead>
+    <tbody id="customertable">
+      {{#each customers}}
+      <tr>
+        <td> {{productName}}</td>
+        <td> {{atHand}}</td>
+        <td> {{min}}</td>
+        <td> {{cost}}</td>
+        <td> {{price}}</td>
+        <td> <a class="btn btn-warning" href="/{{_id}}" role="button">Edit</a></td>
+        <td> <button class="btn btn-success"> vender </button></td>
+        <td> <button class="btn btn-success"> fabricar </button></td>
+        <td> <button class="btn btn-success"> comprar </button></td>
+      </tr>
+    {{/each}}
+    </tbody>
+    </table>
+  </div>
+</template>
+
+<template name="add_product">
+  <div class="modal fade" id="add_product">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title"> Nuevo Producto
+          </div>
+        </div>
+        <div class="modal-body">
+          <form class="js-add-product form-horizontal">
+              <div class="form-group">
+                <label for="productName" class="col-sm-2 control-label">Producto</label>
+                <div class="col-sm-10">
+                  <input type="text" name="productName" class="form-control" placeholder="Nombre">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="atHand" class="col-sm-2 control-label">Disponible</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" name="atHand" placeholder="Cantidad disponible">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="supplier" class="col-sm-2 control-label">Provedor</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="supplier" placeholder="Provedor">
+                </div>
+              </div>
+                <div class="form-group">
+                  <label for="min" class="col-sm-2 control-label">Minimo</label>
+                  <div class="col-sm-10">
+                    <input type="number" class="form-control" name="min" placeholder="Punto de reorden">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="orderQty" class="col-sm-2 control-label">Orden</label>
+                  <div class="col-sm-10">
+                    <input type="number" class="form-control" name="orderQty" placeholder="Cantidad min por orden">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="price" class="col-sm-2 control-label">Precio</label>
+                  <div class="col-sm-10">
+                    <input type="number" class="form-control" name="price" placeholder="Precio">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="cost" class="col-sm-2 control-label">Costo</label>
+                  <div class="col-sm-10">
+                    <input type="number" class="form-control" name="cost" placeholder="Costo">
+                  </div>
+                </div>
+
+            <div class="form-group">
+              <label for="comment" class="col-sm-2 control-label">Comentarios</label>
+            </div>
+              <div class="form-group">
+                <textarea class="form-control" rows="5" name="comment" placeholder="Comentarios"></textarea>
+              </div>
+
+              <button class="btn btn-success">Aceptar</button>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-warning" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- <template name="add_product">
+  <div class="modal fade" id="add_product">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">
+          </div>
+        </div>
+        <div class="modal-body">
+          <form class="js-add-product">
+            <input type="text" name="img_src" placeholder="URL"/><br/>
+            <input type="text" name="img_alt" placeholder="Describe the product here"/>
+            <button class="btn btn-success">add product</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-warning" data-dismiss="modal">cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template> -->
+
+
+<template name="product">
+  <div class="container">
+    <h2>{{productName}}</h2>
+    {{#if currentUser}}
+    <form class="js-edit-product form-horizontal">
+        <div class="form-group">
+          <label for="productName" class="col-sm-2 control-label">Producto</label>
+          <div class="col-sm-10">
+            <input type="text" name="productName" class="form-control" value="{{productName}}" placeholder="Nombre">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="atHand" class="col-sm-2 control-label">Disponible</label>
+          <div class="col-sm-10">
+            <input type="number" class="form-control" name="atHand" value="{{atHand}}" placeholder="Cantidad disponible">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="supplier" class="col-sm-2 control-label">Provedor</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="supplier" value="{{supplier}}" placeholder="Provedor">
+          </div>
+        </div>
+          <div class="form-group">
+            <label for="min" class="col-sm-2 control-label">Minimo</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" name="min" value="{{min}}" placeholder="Punto de reorden">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="orderQty" class="col-sm-2 control-label">Orden</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" name="orderQty" value="{{orderQty}}" placeholder="Cantidad min por orden">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="price" class="col-sm-2 control-label">Precio</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" name="price" value="{{price}}" placeholder="Precio">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cost" class="col-sm-2 control-label">Costo</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" name="cost" value="{{cost}}" placeholder="Costo">
+            </div>
+          </div>
+
+      <div class="form-group">
+        <label for="comment" class="col-sm-2 control-label">Comentarios</label>
+      </div>
+        <div class="form-group">
+          <textarea class="form-control" rows="5" name="comment" value="{{comment}}" placeholder="Comentarios"></textarea>
+        </div>
+        <button class="btn btn-success js-update-product">Aceptar</button>
+        <a class="btn btn-danger js-del-product" href="/inventory" role="button">Eliminar</a>
+
+    </form>
+    {{/if}}
+  </div>
+</template>
