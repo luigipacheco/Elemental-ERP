@@ -52,8 +52,28 @@ Router.route('/inventory', function () {
   this.render('add_product',{         //render the catalogue template to the main tag
     to:"modal"
   });
+  this.render('sell_product',{         //render the catalogue template to the main tag
+    to:"modal2"
+  });
 });
 
+Router.route('/manufacturing', function () {
+  this.render('navbar',{           //render the navbar template to the navbar tag
+    to:"navbar"
+  });
+  this.render('erp-navbar',{           //render the navbar template to the navbar tag
+    to:"sec-navbar"
+  });
+  this.render('manufacturing',{         //render the catalogue template to the main tag
+    to:"main"
+  });
+  this.render('add_product',{         //render the catalogue template to the main tag
+    to:"modal"
+  });
+  // this.render('sell_product',{         //render the catalogue template to the main tag
+  //   to:"modal2"
+  // });
+});
 
 Router.route('/customers', function () {
   this.render('navbar',{           //render the navbar template to the navbar tag
@@ -113,7 +133,7 @@ Router.route('/tasks', function () {
   });
 });
 
-Router.route('/:_id', function () {
+Router.route('/product/:_id', function () {
   this.render('navbar',{           //render the navbar template to the navbar tag
     to:"navbar"
   });

@@ -9,27 +9,36 @@
       <tr>
         <th>Producto</th>
         <th>Disponible</th>
+        {{#if currentUser}}
         <th>Minimo</th>
         <th>Costo</th>
         <th>Precio</th>
+        {{/if}}
       </tr>
     </thead>
     <tbody id="customertable">
-      {{#each customers}}
+      {{#each products}}
       <tr>
         <td> {{productName}}</td>
         <td> {{atHand}}</td>
+        {{#if currentUser}}
         <td> {{min}}</td>
         <td> {{cost}}</td>
         <td> {{price}}</td>
-        <td> <a class="btn btn-warning" href="/{{_id}}" role="button">Edit</a></td>
-        <td> <button class="btn btn-success"> vender </button></td>
-        <td> <button class="btn btn-success"> fabricar </button></td>
-        <td> <button class="btn btn-success"> comprar </button></td>
+        <td> <a class="btn btn-info" href="/product/{{_id}}" role="button">Edit</a></td>
+        <td> <button class="btn btn-success js-sell-product" data-id="{{_id}}"> Vender </button></td>
+        {{#if isManufactured}}
+        <td> <button class="btn btn-warning js-manufacture-product"> Fabricar </button></td>
+        {{/if}}
+        {{#if isPurchased}}
+        <td> <button class="btn btn-default js-buy-product"> Comprar </button></td>
+        {{/if}}
+        <td> <button class="btn btn-danger js-consume-product"> Usar </button></td>
+        {{/if}}
       </tr>
     {{/each}}
     </tbody>
-    </table>
+  </table>
   </div>
 </template>
 
@@ -49,6 +58,21 @@
                   <input type="text" name="productName" class="form-control" placeholder="Nombre">
                 </div>
               </div>
+              <div class="form-group">
+                <label for="isManufactured" class="col-sm-2 control-label">Se Fabrica</label>
+                <div class="col-sm-10">
+                  <select class="selectpicker" name="isManufactured">
+                    <option>SI</option>
+                    <option>NO</option>
+                  </select>
+                </div>
+              </div>
+              <!-- <div class="form-group">
+                <label for="isManufactured" class="col-sm-2">Fabricado</label>
+                <div class="col-sm-10">
+                  <input type="checkbox" name="isManufactured">
+                </div>
+              </div> -->
               <div class="form-group">
                 <label for="atHand" class="col-sm-2 control-label">Disponible</label>
                 <div class="col-sm-10">
@@ -106,6 +130,127 @@
   </div>
 </template>
 
+<template name="sell_product">
+  <div class="modal fade" id="sell_product">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title"><h2>{{productName}}</h2> Vender Producto
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+          <div class = "col-sm-6"> <h3> Disponible {{atHand}}</h3></div></div>
+          <form class="js-sell-product form-horizontal">
+              <div class="form-group">
+                <label for="sellQty" class="col-sm-2 control-label">Cantidad</label>
+                <div class="col-sm-10">
+                  <input type="number" name="sellQty" class="form-control" placeholder="cantidad">
+                </div>
+              </div>
+
+
+              <button class="btn btn-success">Aceptar</button>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-warning" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="consume_product">
+  <div class="modal fade" id="consume_product">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title"><h2>{{productName}}</h2> Consumir Producto
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+          <div class = "col-sm-6"> <h3> Disponible {{atHand}}</h3></div></div>
+          <form class="js-consume-product form-horizontal">
+              <div class="form-group">
+                <label for="consumeQty" class="col-sm-2 control-label">Cantidad</label>
+                <div class="col-sm-10">
+                  <input type="number" name="consumeQty" class="form-control" placeholder="cantidad">
+                </div>
+              </div>
+              <button class="btn btn-success">Aceptar</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-warning" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="order_product_manufacture">
+  <div class="modal fade" id="order_product_manufacture">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title"><h2>{{productName}}</h2> Solicitar Producción de Producto
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+          <div class = "col-sm-6"> <h3> Disponible {{atHand}}</h3></div></div>
+          <form class="js-manufacture-product form-horizontal">
+              <div class="form-group">
+                <label for="produceQty" class="col-sm-2 control-label">Cantidad</label>
+                <div class="col-sm-10">
+                  <input type="number" name="produceQty" class="form-control" placeholder="cantidad">
+                </div>
+              </div>
+              <button class="btn btn-success">Aceptar</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-warning" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="buy_product">
+  <div class="modal fade" id="buy_product">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title"><h2>{{productName}}</h2> Vender Producto
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+          <div class = "col-sm-6"> <h3> Disponible {{atHand}}</h3></div></div>
+          <form class="js-buy-product form-horizontal">
+              <div class="form-group">
+                <label for="buyQty" class="col-sm-2 control-label">Cantidad</label>
+                <div class="col-sm-10">
+                  <input type="number" name="buyQty" class="form-control" placeholder="cantidad">
+                </div>
+              </div>
+
+
+              <button class="btn btn-success">Aceptar</button>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-warning" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 <!-- <template name="add_product">
   <div class="modal fade" id="add_product">
     <div class="modal-dialog">
@@ -132,7 +277,8 @@
 
 <template name="product">
   <div class="container">
-    <h2>{{productName}}</h2>
+    <div class="row">
+    <h2>{{productName}}</h2></div>
     {{#if currentUser}}
     <form class="js-edit-product form-horizontal">
         <div class="form-group">
@@ -141,6 +287,21 @@
             <input type="text" name="productName" class="form-control" value="{{productName}}" placeholder="Nombre">
           </div>
         </div>
+        <div class="form-group">
+          <label for="isManufactured" class="col-sm-2 control-label">Se Fabrica</label>
+          <div class="col-sm-10">
+            <select class="selectpicker" name="isManufactured">
+              <option>SI</option>
+              <option>NO</option>
+            </select>
+          </div>
+        </div>
+        <!-- <div class="form-group">
+          <label for="isManufactured" class="col-sm-2 control-label">Fabricado</label>
+          <div class="col-sm-10">
+            <input type="checkbox" name="isManufactured">
+          </div>
+        </div> -->
         <div class="form-group">
           <label for="atHand" class="col-sm-2 control-label">Disponible</label>
           <div class="col-sm-10">
@@ -186,7 +347,9 @@
           <textarea class="form-control" rows="5" name="comment" value="{{comment}}" placeholder="Comentarios"></textarea>
         </div>
         <button class="btn btn-success js-update-product">Aceptar</button>
-        <a class="btn btn-danger js-del-product" href="/inventory" role="button">Eliminar</a>
+        <button class="btn btn-warning js-cancel">Cancelar</button>
+
+        <a class="btn btn-danger js-del-product pull-right" href="/inventory" role="button">Eliminar</a>
 
     </form>
     {{/if}}
