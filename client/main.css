@@ -35,6 +35,9 @@ div.checked .text {
 .task{
   margin-top:20px;
 }
+.btnspace{
+  margin: 10px;
+}
 .bartab{
   background-color: gray;
 }

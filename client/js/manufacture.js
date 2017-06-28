@@ -19,3 +19,35 @@ Template.manufacturing.events({
   }
 
 })
+
+Template.make_product.events({
+  'submit .js-make-product':function(event){
+  var makeQty = Number(event.target.makeQty.value);
+  var pending = Number(Inventory.findOne({_id:Session.get("ProductId")}).produceQty);
+  var currentstock = Number(Inventory.findOne({_id:Session.get("ProductId")}).atHand);
+  var finalstock = currentstock + makeQty;
+  var produceQty =  pending - makeQty;
+  var log = "Made " + makeQty + " "+ Inventory.findOne({_id:Session.get("ProductId")}).productName;
+
+  if (Meteor.user()){
+    console.log(log);
+    Log.insert(
+      {
+      createdAt:new Date(),
+      username:Meteor.user().username,
+      log:log
+      }
+      );
+    Inventory.update(Session.get("ProductId"), {
+           $set: {
+             atHand:finalstock,
+             produceQty:produceQty
+            }
+         });
+
+  }
+
+  Modal.hide('make_product');                         //hide the modal after adding
+  return false;
+}
+})

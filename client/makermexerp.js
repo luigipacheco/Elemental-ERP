@@ -23,7 +23,14 @@ Router.route('/products', function () {
     to:"sec-navbar"
   });
 });
-
+Router.route('/admin', function () {
+  this.render('navbar',{           //render the navbar template to the navbar tag
+    to:"navbar"
+  });
+  this.render('admin',{         //render the catalogue template to the main tag
+    to:"main"
+  });
+});
 Router.route('/crm', function () {
   this.render('navbar',{           //render the navbar template to the navbar tag
     to:"navbar"
@@ -65,6 +72,24 @@ Router.route('/manufacturing', function () {
     to:"sec-navbar"
   });
   this.render('manufacturing',{         //render the catalogue template to the main tag
+    to:"main"
+  });
+  this.render('add_product',{         //render the catalogue template to the main tag
+    to:"modal"
+  });
+  // this.render('sell_product',{         //render the catalogue template to the main tag
+  //   to:"modal2"
+  // });
+});
+
+Router.route('/purchasing', function () {
+  this.render('navbar',{           //render the navbar template to the navbar tag
+    to:"navbar"
+  });
+  this.render('erp-navbar',{           //render the navbar template to the navbar tag
+    to:"sec-navbar"
+  });
+  this.render('purchasing',{         //render the catalogue template to the main tag
     to:"main"
   });
   this.render('add_product',{         //render the catalogue template to the main tag
@@ -149,6 +174,7 @@ Router.route('/product/:_id', function () {
 });
 
 console.log("client running");
+
 
 
 //---

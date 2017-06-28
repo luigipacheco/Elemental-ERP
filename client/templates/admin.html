@@ -1,0 +1,11 @@
+<template name="admin">
+    <div class= "container">
+      <div ><h1> ADMIN PANEL </h1></div>
+    {{#if isInRole 'admin'}}
+      {{> appDumpUI}}
+    {{else}}
+        NOT AN ADMIN GET OUT!!!
+    {{/if}}
+    {{> logs}}
+  </div>
+</template>

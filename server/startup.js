@@ -42,5 +42,15 @@ Meteor.startup(function(){     //runs only on startup
       );
       console.log("startup.js sez: Example task added to Tasks collection");
   }
+  if (Log.find().count()== 0){   // checks for content in the products collection
+    Log.insert(                  //inserts an example product in case none is found
+      {
+      createdAt:new Date(),
+      username:"dude",
+      log:"First Log ever"
+      }
+      );
+      console.log("startup.js sez: First Log created");
+  }
 
 })

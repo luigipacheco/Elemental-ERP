@@ -73,9 +73,17 @@ Template.consume_product.events({
   var currentstock = Inventory.findOne({_id:Session.get("ProductId")}).atHand;
   var consumeQty = event.target.consumeQty.value;
   var finalstock = +currentstock - +consumeQty;
-  console.log(finalstock);
+  var log ="Consumed " +consumeQty + " "+ Inventory.findOne({_id:Session.get("ProductId")}).productName;
 
   if (Meteor.user()){
+    console.log(log);
+    Log.insert(
+      {
+      createdAt:new Date(),
+      username:Meteor.user().username,
+      log:log
+      }
+      );
     Inventory.update(Session.get("ProductId"), {
            $set: {
              atHand:finalstock
@@ -92,9 +100,17 @@ Template.consume_product.events({
 Template.order_product_manufacture.events({
   'submit .js-manufacture-product':function(event){
   var produceQty = Number(event.target.produceQty.value);
-  console.log("Manufacturing " +produceQty + " "+ Inventory.findOne({_id:Session.get("ProductId")}).productName);
+  var log ="Manufacturing " +produceQty + " "+ Inventory.findOne({_id:Session.get("ProductId")}).productName;
 
   if (Meteor.user()){
+    console.log(log);
+    Log.insert(
+      {
+      createdAt:new Date(),
+      username:Meteor.user().username,
+      log:log
+      }
+      );
     Inventory.update(Session.get("ProductId"), {
            $set: {
              produceQty:produceQty
@@ -113,9 +129,17 @@ Template.sell_product.events({
   var currentstock = Inventory.findOne({_id:Session.get("ProductId")}).atHand;
   var sellQty = event.target.sellQty.value;
   var finalstock = +currentstock - +sellQty;
-  console.log(finalstock);
+  var log = "Sold "+ sellQty +" " +Inventory.findOne({_id:Session.get("ProductId")}).productName;
 
   if (Meteor.user()){
+    console.log(log);
+    Log.insert(
+      {
+      createdAt:new Date(),
+      username:Meteor.user().username,
+      log:log
+      }
+      );
     Inventory.update(Session.get("ProductId"), {
            $set: {
              atHand:finalstock
@@ -132,14 +156,22 @@ Template.sell_product.events({
 Template.buy_product.events({
   'submit .js-buy-product':function(event){
   var currentstock = Inventory.findOne({_id:Session.get("ProductId")}).atHand;
-  var buyQty = event.target.buyQty.value;
-  var finalstock = +currentstock + +buyQty;
-  console.log(finalstock);
+  var purchaseQty = Number(event.target.buyQty.value);
+  var finalstock = +currentstock + +purchaseQty;
+  var log = "Requested "+ purchaseQty +" " +Inventory.findOne({_id:Session.get("ProductId")}).productName;
 
   if (Meteor.user()){
+    console.log(log);
+    Log.insert(
+      {
+      createdAt:new Date(),
+      username:Meteor.user().username,
+      log:log
+      }
+      );
     Inventory.update(Session.get("ProductId"), {
            $set: {
-             atHand:finalstock
+             purchaseQty:purchaseQty
             }
          });
   }
@@ -162,9 +194,17 @@ Template.add_product.events({                //this looks for events on the add 
      price = event.target.price.value;
      cost = event.target.cost.value;
      comment = event.target.comment.value;
+     var log = "Product created: " + productName + " Qty: " + atHand ;
 
-     console.log("Product "+productName +" added");            //print to console
      if (Meteor.user()){
+       console.log(log);
+       Log.insert(
+         {
+         createdAt:new Date(),
+         username:Meteor.user().username,
+         log:log
+         }
+         );
        Inventory.insert({                                       // insert thw following to the data base
          productName:productName,
          atHand:atHand,
@@ -187,7 +227,16 @@ Template.add_product.events({                //this looks for events on the add 
 })
 Template.product.events({
   'click .js-del-product':function(event){ //if object with .js-del-product clicked
-    var product_id= this._id   //store ID
+    var product_id= this._id
+    var log = "Product deleted: " + Inventory.findOne({_id:product_id}).productName;
+   console.log(log);
+    Log.insert(
+      {
+      createdAt:new Date(),
+      username:Meteor.user().username,
+      log:log
+      }
+      );
     console.log("deleted "+ product_id);    //print ID on console
       //animate
     Inventory.remove({"_id":product_id});     //delete the product
@@ -209,12 +258,21 @@ Template.product.events({
     price = event.target.price.value;
     cost = event.target.cost.value;
     comment = event.target.comment.value;
-
+    var log = " Product changed: " + productName + " qty: "+atHand;
+    date =  new Date();
+    comment = event.target.comment.value + " " + date +"// "+log+"// ";
 
 
 
     if (Meteor.user()){
-      console.log("Product "+productName +" updated");            //print to console
+      console.log(log);
+       Log.insert(
+         {
+         createdAt:new Date(),
+         username:Meteor.user().username,
+         log:log
+         }
+         );
       Inventory.update(this._id, {
              $set: {
                productName:productName,

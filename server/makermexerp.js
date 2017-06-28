@@ -12,3 +12,10 @@ if (!(Meteor.users.findOne({username: "admin"}))) {
   Roles.addUsersToRoles( adminuser, ['admin'] );
 
 };
+
+Meteor.methods({
+  'clearLog'(){
+    if (Roles.userIsInRole(this.userId,"admin")){
+      Log.remove({});
+  }}
+})

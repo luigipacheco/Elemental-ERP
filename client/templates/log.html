@@ -1,0 +1,21 @@
+<template name="logs">
+  <div class="container">
+    <h1> LOG </h1>
+    {{#if isInRole 'admin'}}
+    <button class="btn btn-warning js-clear-save-log" data-dismiss="modal">Save/Clear Log</button>
+
+    {{/if}}
+    {{#each logs}}
+      {{> log}}
+    {{/each}}
+
+  </div>
+</template>
+
+<template name="log">
+  <div class="container">
+    <div class="col-xs-2">{{username}}</div>
+    <div class="col-xs-4">{{createdAt}}</div>
+    <div class="col-xs-6">{{log}}</div>
+  </div>
+</template>
