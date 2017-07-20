@@ -179,7 +179,7 @@ console.log("client running");
 
 //---
 
-Session.set("productLimit",8);
+Session.set("productLimit",15);
 //infinite scroll
 lastScrollTop = 0;
 $(window).scroll(function(event){
