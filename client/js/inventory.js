@@ -1,10 +1,10 @@
 Template.inventory.helpers({
   products:function(){ //calls the products based on a filter
      if (Session.get("userFilter")){// they set a filter!
-       return Inventory.find({createdBy:Session.get("userFilter")}, {sort:{rating:-1}, limit:Session.get("productLimit")}); //return the user its stored in the session get user filter
+       return Inventory.find({createdBy:Session.get("userFilter")}, {sort:{productSKU:1}, limit:Session.get("productLimit")}); //return the user its stored in the session get user filter
      }
      else {
-       return Inventory.find({}, {sort:{last:-1}, limit:Session.get("productLimit")});  // if nothing or something falsey is stored return all products!
+       return Inventory.find({}, {sort:{productSKU:1}, limit:Session.get("productLimit")});  // if nothing or something falsey is stored return all products!
      }
    },
    "isManufactured":function(){
@@ -183,9 +183,10 @@ Template.buy_product.events({
 
 Template.add_product.events({                //this looks for events on the add product template
    'submit .js-add-product':function(event){         //if sumbmit event happens
-     var productName, atHand, supplier, isManufactured;                                 //create variables
+     var productName, productSKU, atHand, supplier, isManufactured;                                 //create variables
      var min, orderQty, price, cost, comment ;
      productName = event.target.productName.value;                //store variables
+     productSKU = event.target.productSKU.value;
      atHand = event.target.atHand.value;
      supplier = event.target.supplier.value;
      min = event.target.min.value;
@@ -194,7 +195,7 @@ Template.add_product.events({                //this looks for events on the add 
      price = event.target.price.value;
      cost = event.target.cost.value;
      comment = event.target.comment.value;
-     var log = "Product created: " + productName + " Qty: " + atHand ;
+     var log = "Product created: " + productSKU + " " + productName + " Qty: " + atHand ;
 
      if (Meteor.user()){
        console.log(log);
@@ -202,11 +203,12 @@ Template.add_product.events({                //this looks for events on the add 
          {
          createdAt:new Date(),
          username:Meteor.user().username,
-         log:log
+         log:log,
          }
          );
        Inventory.insert({                                       // insert thw following to the data base
          productName:productName,
+         productSKU: productSKU,
          atHand:atHand,
          supplier:supplier,
          min:min,
@@ -247,9 +249,10 @@ Template.product.events({
     },
 
   'submit .js-edit-product':function(event){         //if sumbmit event happens
-    var productName, atHand, supplier, isManufactured;                                 //create variables
+    var productName, productSKU, atHand, supplier, isManufactured;                                 //create variables
     var min, orderQty, price, cost, comment ;
     productName = event.target.productName.value;                //store variables
+    productSKU = event.target.productSKU.value;
     atHand = event.target.atHand.value;
     supplier = event.target.supplier.value;
     min = event.target.min.value;
@@ -258,7 +261,7 @@ Template.product.events({
     price = event.target.price.value;
     cost = event.target.cost.value;
     comment = event.target.comment.value;
-    var log = " Product changed: " + productName + " qty: "+atHand;
+    var log = " Product changed: " + productSKU + " " + productName + " qty: "+atHand;
     date =  new Date();
     comment = event.target.comment.value + " " + date +"// "+log+"// ";
 
@@ -276,6 +279,7 @@ Template.product.events({
       Inventory.update(this._id, {
              $set: {
                productName:productName,
+               productSKU: productSKU,
                atHand:atHand,
                supplier:supplier,
                min:min,
