@@ -1,0 +1,30 @@
+# Local-dev override for docker-compose.yml.
+#
+# Usage (run from the repo root):
+#   docker compose \
+#     -f infra/docker-compose.yml \
+#     -f infra/docker-compose.local.yml \
+#     --env-file .env \
+#     up -d postgres nocodb
+#
+# Only `postgres` and `nocodb` are started; `crm` and `caddy` are skipped
+# because we serve the frontend with Vite (`pnpm --filter @elemental/crm-app dev`).
+#
+# The override exposes:
+#   - postgres on host port 5432
+#   - nocodb   on host port 8080
+# so the seed script and the Vite dev server (running on the host) can reach them.
+
+services:
+  postgres:
+    ports:
+      - "5432:5432"
+
+  nocodb:
+    ports:
+      - "8080:8080"
+    environment:
+      # NocoDB needs to know its own public URL for invite links etc.
+      NC_PUBLIC_URL: http://localhost:8080
+      # Permissive CORS so the Vite dev server (5173) can call the API.
+      NC_ALLOW_LOCAL_HOOKS: "true"

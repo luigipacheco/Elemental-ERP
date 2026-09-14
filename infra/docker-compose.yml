@@ -1,0 +1,122 @@
+# =============================================================================
+# Elemental ERP - production stack
+#
+# Bring up with:
+#   docker compose --env-file ../.env -f docker-compose.yml up -d
+#
+# Services:
+#   postgres - durable store
+#   nocodb   - schema/meta + Airtable-style admin UI
+#   seed     - one-shot job that bootstraps the CRM schema (idempotent)
+#   crm      - static Refine frontend served by nginx
+#   caddy    - HTTPS reverse proxy (Let's Encrypt)
+# =============================================================================
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [internal]
+
+  nocodb:
+    image: nocodb/nocodb:latest
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NC_DB: "pg://postgres:5432?u=${POSTGRES_USER}&p=${POSTGRES_PASSWORD}&d=${POSTGRES_DB}"
+      NC_PUBLIC_URL: ${NC_PUBLIC_URL}
+      NC_AUTH_JWT_SECRET: ${NC_AUTH_JWT_SECRET}
+      NC_DISABLE_TELE: "true"
+      NC_INVITE_ONLY_SIGNUP: "true"
+    volumes:
+      - nocodb_data:/usr/app/data
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/api/v1/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+    networks: [internal]
+
+  seed:
+    image: node:20-alpine
+    depends_on:
+      nocodb:
+        condition: service_healthy
+    working_dir: /app
+    environment:
+      NOCODB_URL: http://nocodb:8080
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      DEMO_DATA: "true"
+    volumes:
+      - ../:/app
+      - seed_marker:/marker
+    command: >-
+      sh -c "
+        if [ -f /marker/.seeded ]; then
+          echo 'Already seeded - skipping. Delete the seed_marker volume to re-run.';
+          exit 0;
+        fi;
+        corepack enable && corepack prepare pnpm@9.12.0 --activate &&
+        pnpm install --frozen-lockfile=false &&
+        pnpm seed &&
+        if [ \"$$DEMO_DATA\" = \"true\" ]; then pnpm demo:seed; fi &&
+        touch /marker/.seeded
+      "
+    restart: "no"
+    networks: [internal]
+
+  crm:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.crm
+      args:
+        VITE_NOCODB_URL: ${VITE_NOCODB_URL}
+        VITE_CRM_BASE_NAME: ${VITE_CRM_BASE_NAME}
+    restart: unless-stopped
+    depends_on:
+      - nocodb
+    networks: [internal]
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      CRM_DOMAIN: ${CRM_DOMAIN}
+      ADMIN_DOMAIN: ${ADMIN_DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - crm
+      - nocodb
+    networks: [internal, public]
+
+volumes:
+  postgres_data:
+  nocodb_data:
+  seed_marker:
+  caddy_data:
+  caddy_config:
+
+networks:
+  internal:
+  public:

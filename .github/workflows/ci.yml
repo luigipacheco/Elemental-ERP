@@ -1,0 +1,94 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Lint, typecheck, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile=false
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build
+        run: pnpm build
+
+  smoke:
+    name: docker-compose smoke test
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare env
+        run: |
+          cp infra/.env.example .env
+          echo "POSTGRES_PASSWORD=ci-password" >> .env
+          echo "ADMIN_EMAIL=ci@example.com" >> .env
+          echo "ADMIN_PASSWORD=ci-password-123" >> .env
+          echo "NC_AUTH_JWT_SECRET=$(openssl rand -hex 48)" >> .env
+          echo "NC_PUBLIC_URL=http://localhost:8080" >> .env
+
+      - name: Start core services
+        run: |
+          docker compose -f infra/docker-compose.yml --env-file .env up -d postgres nocodb
+
+      - name: Wait for NocoDB
+        run: |
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:8080/api/v1/health >/dev/null 2>&1; then
+              echo "NocoDB ready"; exit 0
+            fi
+            sleep 5
+          done
+          echo "NocoDB never became healthy"; exit 1
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile=false
+
+      - name: Run seed
+        env:
+          NOCODB_URL: http://localhost:8080
+          ADMIN_EMAIL: ci@example.com
+          ADMIN_PASSWORD: ci-password-123
+        run: pnpm seed
+
+      - name: Assert CRM tables exist
+        env:
+          ADMIN_EMAIL: ci@example.com
+          ADMIN_PASSWORD: ci-password-123
+        run: node scripts/assert-tables.mjs
+
+      - name: Dump container logs on failure
+        if: failure()
+        run: docker compose -f infra/docker-compose.yml logs --tail 200
+
+      - name: Tear down
+        if: always()
+        run: docker compose -f infra/docker-compose.yml --env-file .env down -v

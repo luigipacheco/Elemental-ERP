@@ -1,11 +1,26 @@
 {
-  "name": "mmcontrol",
+  "name": "elemental-erp",
   "private": true,
-  "scripts": {
-    "start": "meteor run"
+  "version": "0.1.0",
+  "description": "Modular open-source ERP starting with CRM, built on NocoDB + Refine.dev.",
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20"
   },
-  "dependencies": {
-    "meteor-node-stubs": "~0.2.0",
-    "babel-runtime": "6.18.0"
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "seed": "tsx scripts/seed.ts",
+    "demo:seed": "tsx scripts/demo-data.ts",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md,yml,yaml}\""
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "prettier": "^3.3.3",
+    "tsx": "^4.19.0",
+    "turbo": "^2.1.0",
+    "typescript": "^5.5.4"
   }
 }

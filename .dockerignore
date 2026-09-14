@@ -1,0 +1,29 @@
+.git
+.github
+.vscode
+.idea
+node_modules
+**/node_modules
+dist
+build
+.next
+.turbo
+.cache
+backups
+infra/data
+*.log
+npm-debug.log
+pnpm-debug.log
+
+# legacy meteor build artefacts
+.meteor/local
+dump
+
+# the legacy code is checked in for archival reference but should not
+# enter production images
+client
+server
+lib
+.meteor
+mmcontrol.js
+public/images

@@ -1,0 +1,21 @@
+# Elemental ERP Caddy config.
+# Two virtual hosts: the curated CRM frontend and the admin (NocoDB) UI.
+
+{
+    email {$ACME_EMAIL}
+}
+
+{$CRM_DOMAIN} {
+    encode zstd gzip
+    reverse_proxy crm:80
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        Referrer-Policy strict-origin-when-cross-origin
+    }
+}
+
+{$ADMIN_DOMAIN} {
+    encode zstd gzip
+    reverse_proxy nocodb:8080
+}

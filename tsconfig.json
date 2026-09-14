@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.base.json",
+  "files": [],
+  "references": [
+    { "path": "./packages/sdk" },
+    { "path": "./packages/ui" },
+    { "path": "./packages/modules/crm" },
+    { "path": "./apps/crm" }
+  ]
+}

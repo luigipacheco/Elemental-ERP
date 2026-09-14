@@ -1,1 +1,33 @@
+# legacy Meteor build artefact
 /dump
+
+# node
+node_modules/
+**/node_modules/
+.pnpm-store/
+
+# build outputs
+dist/
+build/
+.next/
+.turbo/
+.cache/
+
+# env / secrets
+.env
+.env.local
+.env.*.local
+infra/data/
+
+# editor / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log
+npm-debug.log
+pnpm-debug.log
+yarn-error.log
+
+# legacy Meteor (kept for archival reference; safe to remove)
+.meteor/local
